@@ -1,18 +1,19 @@
 import * as types from '../mutation-types';
 
-const state = {
-  text: 'lololo',
+const initialState = {
+  text: 'Hello my friend',
 };
 
 const mutations = {
 
   [types.CHANGE_TEXT](_state, newText) {
-    _state.text = newText.newValue; // eslint-disable-line no-param-reassign
+    const state = _state;
+    state.text = newText.newValue;
   },
 
 };
 
 export default {
-  state,
+  state: initialState,
   mutations,
 };

@@ -1,15 +1,49 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }} - {{ count }}</h1>
+
     <h2>{{ testText }}</h2>
     <input type="text" v-model="testText">
-    <button @click="increment(1)">increment</button>
+
+    <hr>
+
+    <h1>{{ msg }} - {{ counter.count }}</h1>
+
+    <button
+      @click="increment(1)"
+      :disabled="counter.processing">increment</button>
+
+    <button
+      @click="decrement(1)"
+      :disabled="counter.processing">decrement</button>
+
+    <hr>
+
+    <ul>
+      <li v-for="todo in todos">
+        <input type="checkbox" :checked="todo.actived" @change="toggleTodo(todo)">
+        <strong>{{ todo.text }}</strong>
+        <button @click="removeTodo(todo)">x</button>
+      </li>
+    </ul>
+
+    <input type="text" @keyup.enter="tryAddTodo">
+
   </div>
 </template>
 
 <script>
 
-import { increment, changeText } from '../vuex/actions';
+import {
+  changeText,
+  addTodo,
+  removeTodo,
+  toggleTodo,
+} from '../vuex/actions';
+
+import {
+  increment,
+  decrement,
+} from '../vuex/modules/counter/counter-actions';
 
 export default {
 
@@ -18,11 +52,16 @@ export default {
   vuex: {
     actions: {
       increment,
+      decrement,
       changeText,
+      addTodo,
+      removeTodo,
+      toggleTodo,
     },
     getters: {
-      count: state => state.test.count,
+      counter: state => state.counter,
       test: state => state.test2.text,
+      todos: state => state.todos,
     },
   },
 
@@ -43,10 +82,19 @@ export default {
       },
       set(newValue) {
         this.changeText({
-          lalala: 'Hello world',
           newValue,
         });
       },
+    },
+  },
+
+  methods: {
+    tryAddTodo(e) {
+      const event = e;
+      const text = event.target.value;
+
+      this.addTodo(text);
+      event.target.value = '';
     },
   },
 

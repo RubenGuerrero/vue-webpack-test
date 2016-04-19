@@ -1,17 +1,20 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createLogger from 'vuex/logger';
 
-import test from './modules/test';
+import counter from './modules/counter';
 import test2 from './modules/test2';
+import todos from './modules/todos';
+
+import middlewares from './middlewares';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    test,
+    counter,
     test2,
+    todos,
   },
   strict: true,
-  middlewares: [createLogger()],
+  middlewares,
 });
